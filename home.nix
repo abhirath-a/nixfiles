@@ -228,6 +228,7 @@
     pkgs.gcc
     pkgs.nil
     pkgs.tmux
+#    pkgs.gnupg
     # (pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
   ];
 

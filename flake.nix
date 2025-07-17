@@ -10,6 +10,7 @@
     hyprland.url = "github:hyprwm/Hyprland";
     catppuccin.url = "github:catppuccin/nix";
     spicetify-nix.url = "github:Gerg-L/spicetify-nix";
+    abhivim.url = "github:abhirath-a/nixvim-config";
   };
   outputs =
     {
@@ -17,7 +18,7 @@
       nixpkgs,
       home-manager,
       catppuccin,
-      nvf,
+      abhivim,
       ...
     }@inputs:
     {
@@ -29,6 +30,15 @@
             # default nixos configuration file
             ./nixos/configuration.nix
             #home-mananger
+            (
+              { pkgs, ... }:
+              {
+                environment.systemPackages = [
+                  abhivim.packages.${pkgs.system}.default
+                ];
+                environment.variables.EDITOR = "nvim";
+              }
+            )
             home-manager.nixosModules.home-manager
             {
               home-manager.useGlobalPkgs = true;
