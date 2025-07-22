@@ -1,4 +1,4 @@
-{ inputs, pkgs }:
+{ inputs, pkgs, ... }:
 let
   spicePkgs = inputs.spicetify-nix.legacyPackages.${pkgs.system};
 in
@@ -12,4 +12,11 @@ in
     theme = spicePkgs.themes.catppuccin;
     colorScheme = "mocha";
   };
+  catppuccin.ghostty.enable = true;
+  programs.ghostty = {
+    enable = true;
+    enableZshIntegration = true;
+  };
+
+  programs.firefox.enable = true;
 }

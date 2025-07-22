@@ -1,3 +1,4 @@
+{ pkgs, ... }:
 {
 
   catppuccin.hyprland.enable = true;
@@ -163,4 +164,16 @@
       ];
     };
   };
+  catppuccin.mako.enable = true;
+  services.mako.enable = true;
+
+  catppuccin.rofi.enable = true;
+  programs.rofi = {
+    enable = true;
+    package = pkgs.rofi-wayland;
+  };
+
+  catppuccin.waybar.enable = true;
+  programs.waybar.enable = true;
+
 }

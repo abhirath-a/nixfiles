@@ -1,6 +1,7 @@
 {
   # config,
   pkgs,
+  inputs,
   ...
 }:
 
@@ -11,9 +12,9 @@
   home.homeDirectory = "/home/abhi";
   catppuccin.flavor = "mocha";
   imports = [
-    ./cmd
-    ./programs
-    ./wm
+    ./cmd.nix
+    ./programs.nix
+    ./wm.nix
   ];
   # catppuccin.enable = true;
   # This value determines the Home Manager release that your configuration is
