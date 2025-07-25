@@ -16,6 +16,9 @@ in
   programs.ghostty = {
     enable = true;
     enableZshIntegration = true;
+    settings = {
+      background-opacity = 0.8;
+    };
   };
 
   programs.firefox.enable = true;
