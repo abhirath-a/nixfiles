@@ -17,6 +17,12 @@
     enable = true;
     pinentry.package = pkgs.pinentry-curses;
   };
+  programs.direnv = {
+    enable = true;
+    enableZshIntegration = true; # see note on other shells below
+    nix-direnv.enable = true;
+    silent = true;
+  };
   programs.ripgrep.enable = true;
   programs.fd.enable = true;
   programs.zoxide = {
@@ -24,7 +30,6 @@
     enableZshIntegration = true;
     options = [ "--cmd cd" ];
   };
-  catppuccin.fzf.enable = true;
   programs.fzf = {
     enable = true;
     enableZshIntegration = true;
@@ -57,6 +62,9 @@
     enableCompletion = true;
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
+    # initContent = ''
+    #   export DIRENV_LOG_FORMAT = ""
+    # '';
   };
 
 }

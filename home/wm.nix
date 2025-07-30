@@ -1,6 +1,11 @@
 { pkgs, ... }:
+let
+  startupScript = pkgs.pkgs.writeShellScriptBin "start" ''
+    ${pkgs.swww}/bin/swww img ${../wallpapers/yosemite.png}
+  '';
+in
 {
-
+  services.swww.enable = true;
   catppuccin.hyprland.enable = true;
   wayland.windowManager.hyprland = {
     enable = true;
@@ -16,12 +21,13 @@
         "HYPRCURSOR_SIZE = 24"
         # "WLR_NO_HARDWARE_CURSORS"
       ];
+      exec-once = ''${startupScript}/bin/start'';
       general = {
         gaps_in = 5;
         gaps_out = 20;
         border_size = 2;
-        # col.active_border = "rgba(33ccffee) rgba(00ff99ee) 45deg";
-        # col.inactive_border = "rgba(595959aa)";
+        "col.active_border" = "$blue";
+        "col.inactive_border" = "$base";
         resize_on_border = false;
         allow_tearing = false;
         layout = "dwindle";
@@ -86,7 +92,7 @@
       };
       misc = {
         force_default_wallpaper = 0;
-        disable_hyprland_logo = false;
+        disable_hyprland_logo = true;
       };
       input = {
         kb_layout = "us";
