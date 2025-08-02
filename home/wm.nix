@@ -1,12 +1,15 @@
 { pkgs, ... }:
 let
   startupScript = pkgs.pkgs.writeShellScriptBin "start" ''
-    ${pkgs.swww}/bin/swww img ${../wallpapers/yosemite.png}
+    ${pkgs.swww}/bin/swww-daemon &
+    ${pkgs.waybar}/bin/waybar &
+    sleep 1 
+    ${pkgs.swww}/bin/swww img ${../wallpapers/kanagawa-city.jpg}  
   '';
 in
 {
   services.swww.enable = true;
-  catppuccin.hyprland.enable = true;
+  # catppuccin.hyprland.enable = true;
   wayland.windowManager.hyprland = {
     enable = true;
     settings = {
@@ -26,8 +29,8 @@ in
         gaps_in = 5;
         gaps_out = 20;
         border_size = 2;
-        "col.active_border" = "$blue";
-        "col.inactive_border" = "$base";
+        # "col.active_border" = "$blue";
+        # "col.inactive_border" = "$base";
         resize_on_border = false;
         allow_tearing = false;
         layout = "dwindle";
@@ -42,7 +45,6 @@ in
           enabled = true;
           range = 4;
           render_power = 3;
-          color = "rgba(1a1a1aee)";
         };
         blur = {
           enabled = true;
@@ -170,16 +172,16 @@ in
       ];
     };
   };
-  catppuccin.mako.enable = true;
+  # catppuccin.mako.enable = true;
   services.mako.enable = true;
 
-  catppuccin.rofi.enable = true;
+  # catppuccin.rofi.enable = true;
   programs.rofi = {
     enable = true;
     package = pkgs.rofi-wayland;
   };
 
-  catppuccin.waybar.enable = true;
+  # catppuccin.waybar.enable = true;
   programs.waybar.enable = true;
 
 }

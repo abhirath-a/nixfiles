@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ ... }:
 
 {
   programs.git = {
@@ -11,11 +11,6 @@
       gpg.format = "ssh";
       user.signingkey = "~/.ssh/id_ed25519.pub";
     };
-  };
-  programs.gpg.enable = true;
-  services.gpg-agent = {
-    enable = true;
-    pinentry.package = pkgs.pinentry-curses;
   };
   programs.direnv = {
     enable = true;
@@ -42,17 +37,17 @@
     colors = "always";
   };
   programs.fastfetch.enable = true;
-  catppuccin.tmux.enable = true;
+  # catppuccin.tmux.enable = true;
   programs.tmux = {
     enable = true;
     prefix = "C-s";
   };
-  catppuccin.yazi.enable = true;
+  # catppuccin.yazi.enable = true;
   programs.yazi = {
     enable = true;
     enableZshIntegration = true;
   };
-  catppuccin.starship.enable = true;
+  # catppuccin.starship.enable = true;
   programs.starship = {
     enable = true;
     enableZshIntegration = true;
@@ -62,9 +57,6 @@
     enableCompletion = true;
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
-    # initContent = ''
-    #   export DIRENV_LOG_FORMAT = ""
-    # '';
   };
 
 }

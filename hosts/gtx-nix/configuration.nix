@@ -4,7 +4,6 @@
 
 {
   inputs,
-  config,
   pkgs,
   ...
 }:
@@ -14,12 +13,31 @@
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
   ];
-
+  # stylix
+  stylix.enable = true;
+  stylix.base16Scheme = "${pkgs.base16-schemes}/share/themes/kanagawa.yaml";
+  stylix.cursor.package = pkgs.phinger-cursors;
+  stylix.cursor.name = "phinger-cursors-dark";
+  stylix.cursor.size = 20;
+  stylix.fonts = {
+    monospace = {
+      package = pkgs.nerd-fonts.jetbrains-mono;
+      name = "JetBrainsMono Nerd Font";
+    };
+    sansSerif = {
+      package = pkgs.inter;
+      name = "Inter";
+    };
+    serif = {
+      package = pkgs.source-serif-pro;
+      name = "Source Serif Pro";
+    };
+  };
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "nixos"; # Define your hostname.
+  networking.hostName = "gtx-nix"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -80,8 +98,7 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-    #  wget
+    vim
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -99,6 +116,16 @@
     # nvidiaPatches = true;
     xwayland.enable = true;
   };
+  services.displayManager.ly.enable = true;
+  services.displayManager.ly.settings.pam = true;
+  # services.greetd = {
+  #   enable = true;
+  #   settings = {
+  #     default_sesion = "hyprland";
+  #     user = "abhi";
+  #   };
+  #   package = pkgs.greetd.gtkgreet;
+  # };
   # environment.sessionVariables = {
   #   opengl.enable = true;
   #   # nvidia.modesetting.enable = true;

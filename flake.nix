@@ -8,7 +8,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     hyprland.url = "github:hyprwm/Hyprland";
-    catppuccin.url = "github:catppuccin/nix";
+    stylix.url = "github:nix-community/stylix";
     spicetify-nix.url = "github:Gerg-L/spicetify-nix";
     abhivim.url = "github:abhirath-a/nixvim-config";
   };
@@ -17,38 +17,43 @@
       self,
       nixpkgs,
       home-manager,
-      catppuccin,
       abhivim,
+      spicetify-nix,
+      stylix,
       ...
     }@inputs:
     {
       nixosConfigurations = {
-        nixos = nixpkgs.lib.nixosSystem {
+        gtx-nix = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           specialArgs = { inherit inputs; };
           modules = [
             # default nixos configuration file
-            ./nixos/configuration.nix
-            #home-mananger
+            ./hosts/gtx-nix/configuration.nix
+            # nix vim
             (
               { pkgs, ... }:
               {
-                environment.systemPackages = [
-                  abhivim.packages.${pkgs.system}.default
-                ];
-                environment.variables.EDITOR = "nvim";
+                environment = {
+                  systemPackages = [
+                    abhivim.packages.${pkgs.system}.default
+                  ];
+                  variables.EDITOR = "nvim";
+                };
               }
             )
+            # stylix
+            stylix.nixosModules.stylix
+            # home-manager
             home-manager.nixosModules.home-manager
             {
-              home-manager.extraSpecialArgs = { inherit inputs; };
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.users.abhi = {
-                imports = [
+              home-manager = {
+                extraSpecialArgs = { inherit inputs; };
+                useGlobalPkgs = true;
+                useUserPackages = true;
+                users.abhi.imports = [
                   ./home
-                  catppuccin.homeModules.catppuccin
-                  inputs.spicetify-nix.homeManagerModules.default
+                  spicetify-nix.homeManagerModules.default
                 ];
               };
             }
