@@ -9,10 +9,7 @@ in
       adblock
       hidePodcasts
     ];
-    # theme = spicePkgs.themes.catppuccin;
-    # colorScheme = "mocha";
   };
-  # catppuccin.ghostty.enable = true;
   programs.ghostty = {
     enable = true;
     enableZshIntegration = true;
