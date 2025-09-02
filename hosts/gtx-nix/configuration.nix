@@ -5,6 +5,7 @@
 {
   inputs,
   pkgs,
+  config,
   ...
 }:
 
@@ -15,7 +16,26 @@
   ];
   # stylix
   stylix.enable = true;
-  stylix.base16Scheme = "${pkgs.base16-schemes}/share/themes/kanagawa.yaml";
+  # stylix.base16Scheme = "${pkgs.base16-schemes}/share/themes/kanagawa.yaml";
+  stylix.base16Scheme = {
+    base00 = "#181a20";
+    base01 = "#23252b";
+    base02 = "#282a30";
+    base03 = "#393b44";
+    base04 = "#a4a7a4";
+    base05 = "#c8c093";
+    base06 = "#e6e6d1";
+    base07 = "#f7f7ec";
+
+    base08 = "#b8a273";
+    base09 = "#a4a282";
+    base0A = "#c4b28a";
+    base0B = "#8a9a7b";
+    base0C = "#8ea4a2";
+    base0D = "#8ba4b0";
+    base0E = "#a292a3";
+    base0F = "#393b44";
+  };
   stylix.cursor.package = pkgs.phinger-cursors;
   stylix.cursor.name = "phinger-cursors-dark";
   stylix.cursor.size = 20;
@@ -36,7 +56,7 @@
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-
+  boot.kernelModules = [ "uinput" ];
   networking.hostName = "gtx-nix"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
@@ -44,6 +64,21 @@
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
   hardware.opentabletdriver.enable = true;
+  hardware.uinput.enable = true;
+  services.udev.extraRules = ''
+    KERNEL=="uinput", MODE="0660", GROUP="uinput", OPTIONS+="static_node=uinput"
+  '';
+
+  # Ensure the uinput group exists
+  users.groups.uinput = { };
+
+  # Add the Kanata service user to necessary groups
+  systemd.services.kanata-internalKeyboard.serviceConfig = {
+    SupplementaryGroups = [
+      "input"
+      "uinput"
+    ];
+  };
   # Enable networking
   networking.networkmanager.enable = true;
 
@@ -85,10 +120,14 @@
   };
 
   # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
+  nixpkgs = {
+    overlays = [ inputs.abhivim.overlays.default ];
+    config.allowUnfree = true;
+  };
   nix.settings.experimental-features = [
     "nix-command"
     "flakes"
+    "ca-derivations"
   ];
   nix.settings = {
     substituters = [ "https://hyprland.cachix.org" ];
@@ -118,6 +157,26 @@
   };
   services.displayManager.ly.enable = true;
   services.displayManager.ly.settings.pam = true;
+  services.kanata = {
+    enable = true;
+    keyboards = {
+      internalKeyboard = {
+        devices = [
+          "/dev/input/by-path/pci-0000:00:14.0-usbv2-0:13:1.2-event-kbd"
+          "/dev/input/by-path/pci-0000:00:14.0-usbv2-0:1:1.0-event-kbd"
+          "/dev/input/by-path/pci-0000:00:14.0-usb-0:13:1.2-event-kbd"
+          "/dev/input/by-path/pci-0000:00:14.0-usb-0:1:1.0-event-kbd"
+        ];
+        config = ''
+          (defsrc
+            caps)
+
+          (deflayer base
+            esc)
+        '';
+      };
+    };
+  };
   # services.greetd = {
   #   enable = true;
   #   settings = {
@@ -131,7 +190,15 @@
   #   # nvidia.modesetting.enable = true;
   # };
   # List services that you want to enable:
-
+  services.xserver.videoDrivers = [ "nvidia" ]; # Even if you use Hyprland, this ensures the kernel module is loaded
+  hardware.graphics.enable = true;
+  hardware.nvidia = {
+    open = false;
+    modesetting.enable = true;
+    powerManagement.enable = false;
+    nvidiaSettings = true;
+    package = config.boot.kernelPackages.nvidiaPackages.production;
+  };
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
 
@@ -148,5 +215,4 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "25.05"; # Did you read the comment?
-
 }

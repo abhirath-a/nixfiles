@@ -3,6 +3,7 @@ let
   spicePkgs = inputs.spicetify-nix.legacyPackages.${pkgs.system};
 in
 {
+  programs.mpv.enable = true;
   programs.spicetify = {
     enable = true;
     enabledExtensions = with spicePkgs.extensions; [
@@ -13,9 +14,38 @@ in
   programs.ghostty = {
     enable = true;
     enableZshIntegration = true;
+    themes.kanso-zen = {
+      background = "#090E13";
+      foreground = "#c5c9c7";
+      cursor-color = "#c5c9c7";
+      selection-background = "#22262D";
+      selection-foreground = "#c5c9c7";
+      window-padding-balance = true;
+      window-padding-x = 6;
+      window-padding-y = 3;
+      palette = [
+        "0=#090E13"
+        "1=#c4746e"
+        "2=#8a9a7b"
+        "3=#c4b28a"
+        "4=#8ba4b0"
+        "5=#a292a3"
+        "6=#8ea4a2"
+        "7=#a4a7a4"
+        "8=#5C6066"
+        "9=#e46876"
+        "10=#87a987"
+        "11=#e6c384"
+        "12=#7fb4ca"
+        "13=#938aa9"
+        "14=#7aa89f"
+        "15=#c5c9c7"
+      ];
+
+    };
     settings = {
       background-opacity = 0.8;
-      theme = "Kanagawa Wave";
+      theme = "kanso-zen";
     };
   };
   programs.vesktop = {
@@ -62,5 +92,43 @@ in
       };
     };
   };
-  programs.firefox.enable = true;
+  programs.firefox = {
+    enable = true;
+    policies = {
+      DisableTelemetry = true;
+      DisableFirefoxStudies = true;
+    };
+    profiles.default = {
+      id = 0;
+      name = "default";
+      isDefault = true;
+      extensions.packages = with pkgs.nur.repos.rycee.firefox-addons; [
+        ublock-origin
+        bitwarden
+        darkreader
+        vimium
+        sponsorblock
+        dearrow
+        # ethancedwards8.firefox-addons.enhancer-for-youtube
+      ];
+      settings = {
+        "browser.search.defaultenginename" = "DuckDuckGo";
+        "browser.search.order.1" = "DuckDuckGo";
+      };
+      search = {
+        force = true;
+        default = "ddg";
+        order = [
+          "ddg"
+        ];
+      };
+    };
+  };
+  textfox = {
+    enable = true;
+    profile = "default";
+  };
+  programs.obsidian = {
+    enable = true;
+  };
 }

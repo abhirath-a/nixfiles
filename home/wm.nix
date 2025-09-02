@@ -1,10 +1,10 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 let
   startupScript = pkgs.pkgs.writeShellScriptBin "start" ''
     ${pkgs.swww}/bin/swww-daemon &
     ${pkgs.waybar}/bin/waybar &
     sleep 1 
-    ${pkgs.swww}/bin/swww img ${../wallpapers/kanagawa-city.jpg}  
+    ${pkgs.swww}/bin/swww img ${../wallpapers/kanso-wires.jpg}  
   '';
 in
 {
@@ -15,7 +15,8 @@ in
       "$terminal" = "ghostty";
       "$fileManager" = "ghostty -e yazi";
       "$menu" = "rofi -show drun";
-
+      "$emoji" = "rofimoji";
+      "$screenshot" = "grim -g \"$(slurp)\" - | wl-copy -t image/png";
       "$mainMod" = "SUPER";
       monitor = ",prefered,auto,auto";
       env = [
@@ -25,7 +26,7 @@ in
       exec-once = ''${startupScript}/bin/start'';
       general = {
         gaps_in = 5;
-        gaps_out = 20;
+        gaps_out = 10;
         border_size = 2;
         resize_on_border = false;
         allow_tearing = false;
@@ -61,9 +62,7 @@ in
         kb_layout = "us";
         follow_mouse = 1;
         sensitivity = 0;
-        touchpad = {
-          natural_scroll = false;
-        };
+        touchpad.natural_scroll = false;
       };
       gestures.workspace_swipe = false;
       bind = [
@@ -71,11 +70,13 @@ in
         "$mainMod, C, killactive,"
         "$mainMod, M, exit,"
         "$mainMod, E, exec, $fileManager"
+        "$mainMod, H, exec, $screenshot"
+        " , Print, exec, $screenshot"
         "$mainMod, V, togglefloating,"
         "$mainMod, R, exec, $menu"
         "$mainMod, P, pseudo," # dwindle
         "$mainMod, J, togglesplit," # dwindle
-
+        "$mainMod, period, exec, $emoji"
         # Move focus with mainMod + arrow keys
         "$mainMod, left, movefocus, l"
         "$mainMod, right, movefocus, r"
@@ -136,5 +137,134 @@ in
     enable = true;
     package = pkgs.rofi-wayland;
   };
-  programs.waybar.enable = true;
+  programs.waybar = {
+    enable = true;
+    package = pkgs.waybar;
+
+    # This works with Stylix colors
+    style = lib.mkAfter ''
+
+      * {
+          font-size: 16px;
+          font-weight: bold;
+          border-radius: 0;
+      }
+
+      window#waybar {
+          background-color: @base00;
+          color: @base05;
+      }
+
+      #workspaces button {
+          padding: 0 6px;
+          color: @base0C;
+          background: transparent;
+          border-bottom: 3px solid @base00;
+      }
+      #workspaces button.active {
+          color: @base0C;
+          border-bottom: 3px solid @base0E;
+      }
+      #workspaces button.empty {
+          color: @base07;
+      }
+      #workspaces button.empty.active {
+          color: @base0C;
+      }
+
+      #workspaces button.urgent {
+          background-color: @base08;
+      }
+
+      button:hover {
+          background: inherit;
+          box-shadow: inset 0 -3px @base07;
+      }
+
+      #clock,
+      #custom-sep,
+      #battery,
+      #cpu,
+      #memory,
+      #disk,
+      #network,
+      #tray {
+          padding: 0 8px;
+          color: @base07;
+      }
+
+      #custom-sep {
+          color: @base01;
+      }
+
+      #clock {
+          color: @base0C;
+      }
+
+      #battery {
+          color: @base0E;
+      }
+
+      #disk {
+          color: @base0A;
+      }
+
+      #memory {
+          color: @base0E;
+      }
+
+      #cpu {
+          color: @base0B;
+      }
+
+      #network {
+          color: @base0D;
+      }
+
+      #network.disconnected {
+          background-color: @base08;
+      }
+
+      #tray {
+          background-color: @base0D;
+      }
+    '';
+
+    settings = [
+      {
+        layer = "top";
+        position = "top";
+        spacing = 4;
+        height = 30;
+        modules-left = [
+          "hyprland/workspaces"
+          "hyprland/window"
+        ];
+        modules-right = [
+          "cpu"
+          "memory"
+          "clock"
+        ];
+        # Modules configuration
+        "hyprland/workspaces" = {
+          disable-scroll = true;
+          all-outputs = true;
+          warp-on-scroll = false;
+          format = "{name}";
+          persistent-workspaces."*" = 6;
+        };
+
+        "hyprland/window" = {
+          max-length = 40;
+          seperate-outputs = false;
+        };
+        clock.format-alt = "{:%Y-%m-%d}";
+        cpu = {
+          format = "{usage}%";
+          tooltip = false;
+        };
+        memory.format = "{used}GiB/{total}GiB";
+      }
+    ];
+  };
 }
