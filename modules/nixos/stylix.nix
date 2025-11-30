@@ -1,0 +1,46 @@
+{
+  pkgs,
+  inputs,
+  ...
+}:
+{
+  imports = [ inputs.stylix.nixosModules.stylix ];
+  stylix = {
+    enable = true;
+    base16Scheme = {
+      base00 = "#090e13";
+      base01 = "#23252b";
+      base02 = "#282a30";
+      base03 = "#393b44";
+      base04 = "#a4a7a4";
+      base05 = "#d0d0d0";
+      base06 = "#e6e6e6";
+      base07 = "#f7f7ec";
+      base08 = "#c4746e";
+      base09 = "#b6927b";
+      base0A = "#c4b28a";
+      base0B = "#8a9a7b";
+      base0C = "#8ea4a2";
+      base0D = "#8ba4b0";
+      base0E = "#a292a3";
+      base0F = "#938aa9";
+    };
+    cursor.package = pkgs.phinger-cursors;
+    cursor.name = "phinger-cursors-dark";
+    cursor.size = 20;
+    fonts = {
+      monospace = {
+        package = pkgs.nerd-fonts.jetbrains-mono;
+        name = "JetBrainsMono Nerd Font";
+      };
+      sansSerif = {
+        package = pkgs.inter;
+        name = "Inter";
+      };
+      serif = {
+        package = pkgs.source-serif-pro;
+        name = "Source Serif Pro";
+      };
+    };
+  };
+}

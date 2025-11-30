@@ -11,22 +11,27 @@
     stylix.url = "github:nix-community/stylix";
     spicetify-nix.url = "github:Gerg-L/spicetify-nix";
     abhivim.url = "github:abhirath-a/nvim";
-    textfox.url = "github:adriankarlen/textfox";
     nur = {
       url = "github:nix-community/NUR";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+    niri-flake = {
+      url = "github:sodiboo/niri-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    cachy-tweaks = {
+      url = "github:AniviaFlome/cachy-tweaks-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nix-mineral = {
+      url = "github:cynicsketch/nix-mineral";
+      flake = false;
     };
   };
   outputs =
     {
       self,
       nixpkgs,
-      home-manager,
-      abhivim,
-      spicetify-nix,
-      stylix,
-      textfox,
-      nur,
       ...
     }@inputs:
     {
@@ -35,24 +40,7 @@
         specialArgs = { inherit inputs; };
         modules = [
           ./hosts/gtx-nix/configuration.nix
-          stylix.nixosModules.stylix
-          home-manager.nixosModules.home-manager
-          # Adds the NUR overlay
-          nur.modules.nixos.default
-          # NUR modules to import
-          nur.legacyPackages."x86_64-linux".repos.iopq.modules.xraya
-          {
-            home-manager = {
-              extraSpecialArgs = { inherit inputs; };
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              users.abhi.imports = [
-                ./home
-                spicetify-nix.homeManagerModules.default
-                textfox.homeManagerModules.default
-              ];
-            };
-          }
+          inputs.niri-flake.nixosModules.niri
         ];
       };
     };
