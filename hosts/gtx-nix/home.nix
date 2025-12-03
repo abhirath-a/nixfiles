@@ -3,9 +3,9 @@
   home.username = "abhi";
   home.homeDirectory = "/home/abhi";
   imports = [
-    ../../modules/homeManager/cmd.nix
-    ../../modules/homeManager/programs.nix
-    ../../modules/homeManager/wm.nix
+    ../../modules/homeManager/cmd
+    ../../modules/homeManager/programs
+    ../../modules/homeManager/wm
   ];
   home.sessionVariables = {
     EDITOR = "nvim";
@@ -36,7 +36,11 @@
     darktable
     xwayland-satellite
     yazi
+    zathura
   ];
+  programs.fuzzel.enable = true;
+  services.mako.enable = true;
+  programs.waybar.enable = true;
 
   programs.home-manager.enable = true;
 }

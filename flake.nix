@@ -7,7 +7,6 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    hyprland.url = "github:hyprwm/Hyprland";
     stylix.url = "github:nix-community/stylix";
     spicetify-nix.url = "github:Gerg-L/spicetify-nix";
     abhivim.url = "github:abhirath-a/nvim";

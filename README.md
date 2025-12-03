@@ -2,8 +2,8 @@
 > my NixOS configuration as a flake.
 
 using:
-- hyprland
-- rofi (rofi-gtk)
+- niri 
+- fuzzel
 - stylix + kanso
 - neovim (with my custom config)
-- ghostty
+- alacritty 
