@@ -3,7 +3,7 @@
   programs.git = {
     enable = true;
     userName = "Abhi";
-    userEmail = "85126640+abhirath-a@users.noreply.github.com";
+    userEmail = "hello@abhirath.net";
     extraConfig = {
       commit.gpgsign = true;
       gpg.format = "ssh";
