@@ -26,6 +26,7 @@
       url = "github:cynicsketch/nix-mineral";
       flake = false;
     };
+    nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
   };
   outputs =
     {
@@ -34,13 +35,23 @@
       ...
     }@inputs:
     {
-      nixosConfigurations.gtx-nix = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = { inherit inputs; };
-        modules = [
-          ./hosts/gtx-nix/configuration.nix
-          inputs.niri-flake.nixosModules.niri
-        ];
-      };
+      nixosConfigurations={
+	      gtx-nix = nixpkgs.lib.nixosSystem {
+		      system = "x86_64-linux";
+		      specialArgs = { inherit inputs; };
+		      modules = [
+			      ./hosts/gtx-nix/configuration.nix
+				      inputs.niri-flake.nixosModules.niri
+		      ];
+	      };
+		latitude-wsl = nixpkgs.lib.nixosSystem {
+			system = "x86_64-linux";
+		      specialArgs = { inherit inputs; };
+			modules = [
+				inputs.nixos-wsl.nixosModules.default
+				./hosts/latitude-wsl/configuration.nix			
+];
+		};
     };
+};
 }
