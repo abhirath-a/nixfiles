@@ -61,7 +61,7 @@
     LC_TIME = "en_US.UTF-8";
   };
 
-  programs.fish.enable = true;
+  programs.bash.enable = true;
   users.users.abhi = {
     isNormalUser = true;
     description = "Abhirath Agasanakoppa";
@@ -69,7 +69,7 @@
       "networkmanager"
       "wheel"
     ];
-    shell = pkgs.fish;
+    shell = pkgs.bash;
   };
 
   nixpkgs = {
