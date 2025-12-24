@@ -2,11 +2,9 @@
 {
   programs.git = {
     enable = true;
-    settings = {
-      user = {
-        name = "Abhi";
-        userEmail = "hello@abhirath.net";
-      };
+    userName = "Abhi";
+    userEmail = "hello@abhirath.net";
+    extraConfig = {
       commit.gpgsign = true;
       gpg.format = "ssh";
       user.signingkey = "~/.ssh/id_ed25519.pub";
