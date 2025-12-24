@@ -17,8 +17,6 @@
     gimp
     swaybg
     prismlauncher
-    grim
-    slurp
     wl-clipboard
     bemoji
     xournalpp
@@ -32,11 +30,11 @@
     mpv
     unzip
     opencode
-    inkscape
     darktable
     xwayland-satellite
-    yazi
-    zathura
+    sleek-todo
+    sops
+    age
   ];
   programs.fuzzel.enable = true;
   services.mako.enable = true;

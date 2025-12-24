@@ -3,13 +3,14 @@
   programs.niri = {
     settings = with config.lib.niri.actions; {
       input.mod-key = "Super";
+      animations.enable = false;
       spawn-at-startup = [
         { argv = [ ''${pkgs.waybar}/bin/waybar'' ]; }
         {
           argv = [
-            ''swaybg''
+            ''${pkgs.swaybg}/bin/swaybg''
             "-i"
-            ''${../../wallpapers/dresden_by_moonlight.jpg}''
+            ''${../../wallpapers/beach-kanso.jpg}''
           ];
         }
       ];
@@ -24,30 +25,15 @@
         default-column-width.proportion = 0.5;
       };
       gestures.hot-corners.enable = false;
-      outputs = {
-        "HDMI-A-3" = {
-          position = {
-            x = 0;
-            y = 0;
-          };
-        };
-
-        "HDMI-A-1" = {
-          position = {
-            x = 1920;
-            y = 0;
-          };
-        };
-      };
 
       binds = {
-        "Mod+R".action = spawn "fuzzel";
-        "Mod+Q".action = spawn "alacritty";
+        "Mod+D".action = spawn "fuzzel";
+        "Mod+T".action = spawn "alacritty";
 
-        "Mod+Period".action = spawn "bemoji";
+        "Mod+E".action = spawn "bemoji";
 
-        "Mod+C".action = close-window;
-        "Mod+Shift+M".action = quit;
+        "Mod+Q".action = close-window;
+        "Mod+Shift+Q".action = quit;
 
         "Mod+H".action = focus-column-left;
         "Mod+J".action = focus-window-down;
@@ -61,20 +47,25 @@
         "Mod+Equal".action = set-column-width "+10%";
         "Mod+Shift+Minus".action = set-window-height "-10%";
         "Mod+Shift+Equal".action = set-window-height "+10%";
+
         "Mod+Shift+S".action.screenshot = [ ];
+
         "Mod+BracketRight".action = consume-or-expel-window-right;
         "Mod+BracketLeft".action = consume-or-expel-window-left;
+        "Mod+period".action = consume-window-into-column;
+        "Mod+Shift+period".action = expel-window-from-column;
 
-        "Mod+Comma".action = consume-window-into-column;
-        "Mod+Shift+Comma".action = expel-window-from-column;
+        "Mod+P".action = switch-preset-column-width;
+        "Mod+Shift+P".action = switch-preset-window-height;
 
-        "Mod+D".action = switch-preset-column-width;
-        "Mod+Shift+D".action = switch-preset-window-height;
         "Mod+Ctrl+D".action = reset-window-height;
+
         "Mod+F".action = maximize-column;
         "Mod+Shift+F".action = fullscreen-window;
-
         "Mod+Ctrl+F".action = expand-column-to-available-width;
+
+        "Mod+G".action = center-column;
+
         "Mod+1".action = focus-workspace 1;
         "Mod+2".action = focus-workspace 2;
         "Mod+3".action = focus-workspace 3;
@@ -101,7 +92,6 @@
         "XF86AudioMute".action = spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
         "XF86AudioMicMute".action = spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle";
 
-        "Mod+G".action = center-column;
         "Mod+U".action = focus-workspace-down;
         "Mod+I".action = focus-workspace-up;
         "Mod+Ctrl+U".action = move-column-to-workspace-down;
@@ -110,10 +100,10 @@
       window-rules = [
         {
           geometry-corner-radius = {
-            bottom-left = 5.0;
-            bottom-right = 5.0;
-            top-left = 5.0;
-            top-right = 5.0;
+            bottom-left = 0.0;
+            bottom-right = 0.0;
+            top-left = 0.0;
+            top-right = 0.0;
           };
           clip-to-geometry = true;
           draw-border-with-background = false;

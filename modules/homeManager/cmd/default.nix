@@ -7,5 +7,6 @@
     ./fzf.nix
     ./git.nix
     ./tmux.nix
+    ./yazi
   ];
 }

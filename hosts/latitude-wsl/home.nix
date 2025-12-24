@@ -17,7 +17,6 @@
     ripgrep
     unzip
     opencode
-    yazi
   ];
 
   programs.home-manager.enable = true;

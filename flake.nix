@@ -27,6 +27,10 @@
       flake = false;
     };
     nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs =
     {
@@ -35,23 +39,23 @@
       ...
     }@inputs:
     {
-      nixosConfigurations={
-	      gtx-nix = nixpkgs.lib.nixosSystem {
-		      system = "x86_64-linux";
-		      specialArgs = { inherit inputs; };
-		      modules = [
-			      ./hosts/gtx-nix/configuration.nix
-				      inputs.niri-flake.nixosModules.niri
-		      ];
-	      };
-		latitude-wsl = nixpkgs.lib.nixosSystem {
-			system = "x86_64-linux";
-		      specialArgs = { inherit inputs; };
-			modules = [
-				inputs.nixos-wsl.nixosModules.default
-				./hosts/latitude-wsl/configuration.nix			
-];
-		};
+      nixosConfigurations = {
+        gtx-nix = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          specialArgs = { inherit inputs; };
+          modules = [
+            ./hosts/gtx-nix/configuration.nix
+            inputs.niri-flake.nixosModules.niri
+          ];
+        };
+        latitude-wsl = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          specialArgs = { inherit inputs; };
+          modules = [
+            inputs.nixos-wsl.nixosModules.default
+            ./hosts/latitude-wsl/configuration.nix
+          ];
+        };
+      };
     };
-};
 }

@@ -8,5 +8,6 @@
     ./spotify.nix
     ./udiskie.nix
     ./vesktop.nix
+    ./zathura.nix
   ];
 }

@@ -12,6 +12,7 @@
     inputs.nur.modules.nixos.default
     inputs.nur.legacyPackages."x86_64-linux".repos.iopq.modules.xraya
     "${inputs.nix-mineral}/nix-mineral.nix"
+    inputs.sops-nix.nixosModules.sops
   ];
   services.udisks2.enable = true;
   services.xserver.videoDrivers = [ "nvidia" ];
@@ -70,6 +71,11 @@
       "wheel"
     ];
     shell = pkgs.bash;
+  };
+  services.syncthing = {
+    enable = true;
+    user = "abhi";
+    openDefaultPorts = true;
   };
 
   nixpkgs = {

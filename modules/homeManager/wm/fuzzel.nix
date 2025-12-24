@@ -6,6 +6,7 @@
         dpi-aware = false;
         icons-enabled = false;
       };
+      border.radius = 0;
       colors = {
         background = "${config.lib.stylix.colors.base00}ff";
         text = "${config.lib.stylix.colors.base05}ff";

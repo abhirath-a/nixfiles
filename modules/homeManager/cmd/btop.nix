@@ -5,6 +5,7 @@
     settings = {
       theme_background = false;
       temp_scale = "fahrenheit";
+      vim_keys = true;
     };
   };
 }
